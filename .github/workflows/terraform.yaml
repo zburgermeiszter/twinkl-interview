@@ -16,6 +16,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      - name: List files after checkout
+        run: ls -lah
+
       - name: Install asdf & tools
         uses: asdf-vm/actions/install@v4
 

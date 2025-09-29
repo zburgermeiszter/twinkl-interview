@@ -1,0 +1,22 @@
+---
+name: 'Terraform'
+
+on:
+  push:
+
+permissions:
+  id-token: write  # for OIDC
+
+
+jobs:
+  Terragrunt-Plan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: arn:aws:iam::092258629944:role/github-actions
+          aws-region: eu-west-2
+      - name: Check caller identity
+        run: |
+          aws sts get-caller-identity

@@ -1,0 +1,25 @@
+{
+  "name": "lambda",
+  "module": "index.ts",
+  "scripts": {
+    "audit": "bun audit",
+    "typecheck": "tsc --noEmit",
+    "build": "bun build --target=node --sourcemap=inline --production --outfile=./build/index.mjs src/index.ts",
+    "watch": "bun run --watch src/index.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.896.0",
+    "@aws-sdk/client-ec2": "^3.896.0",
+    "@aws-sdk/lib-dynamodb": "^3.896.0",
+    "@aws-sdk/util-dynamodb": "^3.896.0",
+    "dotenv": "^17.2.2"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.152",
+    "@types/bun": "^1.2.23",
+    "aws-sdk-client-mock": "^4.1.0",
+    "typescript": "^5.9.2"
+  },
+  "private": true,
+  "type": "module"
+}

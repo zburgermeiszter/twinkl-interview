@@ -1,0 +1,1 @@
+export const DYNAMODB_MAX_CHUNK_SIZE = 25;

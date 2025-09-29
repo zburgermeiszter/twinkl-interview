@@ -28,7 +28,8 @@ jobs:
         run: aws sts get-caller-identity
 
       - name: Terragrunt init
-        run: terragrunt init
+        working-directory: ./terraform
+        run: cd terraform && terragrunt init
 
       - name: Terragrunt plan
-        run: terragrunt plan
+        run: cd terraform && terragrunt plan

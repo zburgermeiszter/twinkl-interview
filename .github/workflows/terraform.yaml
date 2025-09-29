@@ -7,6 +7,9 @@ on:
 permissions:
   id-token: write # for OIDC
 
+env:
+  TG_ALL: true
+
 jobs:
   plan:
     name: Terragrunt Plan
@@ -31,10 +34,10 @@ jobs:
         run: aws sts get-caller-identity
 
       - name: Terragrunt init
-        working-directory: ./terraform/environments/dev
+        working-directory: ./terraform/
         run: |
           terragrunt init
 
       - name: Terragrunt plan
-        working-directory: ./terraform/environments/dev
+        working-directory: ./terraform/
         run: terragrunt plan

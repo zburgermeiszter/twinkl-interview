@@ -11,13 +11,54 @@ env:
   TG_ALL: true
 
 jobs:
+  build:
+    name: Build Lambda
+    environment: dev
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: lambda
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: List files after checkout
+        run: tree
+
+      - name: Install asdf & tools
+        uses: asdf-vm/actions/install@v4
+
+      - name: Bun install
+        run: bun ci --production
+
+      - name: Bun audit
+        run: bun audit
+
+      - name: Run TypeScript type check
+        run: bun run typecheck
+
+      - name: Build
+        run: bun run build
+
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: lambda-bundle
+          path: lambda/build
+
   plan:
     name: Terragrunt Plan
+    needs: build
     environment: dev
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+
+      - name: Restore build artifacts
+        uses: actions/download-artifact@v5
+        with:
+          name: lambda-bundle
 
       - name: List files after checkout
         run: tree

@@ -5,12 +5,18 @@ on:
   push:
 
 permissions:
-  id-token: write  # for OIDC
+  id-token: write # for OIDC
 
 jobs:
   Terragrunt-Plan:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install asdf & tools
+        uses: asdf-vm/actions/install@v4
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5
         with:
@@ -19,5 +25,3 @@ jobs:
       - name: Check caller identity
         run: |
           aws sts get-caller-identity
-      - name: Install asdf & tools
-        uses: asdf-vm/actions/install@v4

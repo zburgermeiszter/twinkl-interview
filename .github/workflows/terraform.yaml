@@ -31,10 +31,10 @@ jobs:
         run: aws sts get-caller-identity
 
       - name: Terragrunt init
-        working-directory: ./terraform
+        working-directory: ./terraform/environments/dev
         run: |
           terragrunt init
 
       - name: Terragrunt plan
-        working-directory: ./terraform
+        working-directory: ./terraform/environments/dev
         run: terragrunt plan

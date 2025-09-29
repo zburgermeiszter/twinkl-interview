@@ -59,6 +59,7 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           name: lambda-bundle
+          path: lambda/build
 
       - name: List files after checkout
         run: tree

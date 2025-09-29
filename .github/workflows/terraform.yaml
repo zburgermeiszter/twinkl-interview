@@ -8,7 +8,9 @@ permissions:
   id-token: write # for OIDC
 
 jobs:
-  Terragrunt-Plan:
+  plan:
+    name: Terragrunt Plan
+    environment: dev
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,8 +22,8 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5
         with:
-          role-to-assume: arn:aws:iam::092258629944:role/github-actions
-          aws-region: eu-west-2
+          role-to-assume: ${{ vars.ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
       - name: Check caller identity
         run: |
           aws sts get-caller-identity

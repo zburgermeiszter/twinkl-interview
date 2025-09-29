@@ -7,7 +7,6 @@ on:
 permissions:
   id-token: write  # for OIDC
 
-
 jobs:
   Terragrunt-Plan:
     runs-on: ubuntu-latest
@@ -20,3 +19,5 @@ jobs:
       - name: Check caller identity
         run: |
           aws sts get-caller-identity
+      - name: Install asdf & tools
+        uses: asdf-vm/actions/install@v4

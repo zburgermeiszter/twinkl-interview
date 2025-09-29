@@ -25,5 +25,10 @@ jobs:
           role-to-assume: ${{ vars.ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
       - name: Check caller identity
-        run: |
-          aws sts get-caller-identity
+        run: aws sts get-caller-identity
+
+      - name: Terragrunt init
+        run: terragrunt init
+
+      - name: Terragrunt plan
+        run: terragrunt plan

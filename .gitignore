@@ -1,0 +1,6 @@
+.aws
+.envrc
+.terraform
+.terragrunt-stack
+backend.tf
+provider.tf

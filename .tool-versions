@@ -1,0 +1,4 @@
+# asdf config
+bun 1.2.22
+terragrunt 0.87.6
+opentofu 1.10.6

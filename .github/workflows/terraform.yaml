@@ -32,7 +32,11 @@ jobs:
 
       - name: Terragrunt init
         working-directory: ./terraform
-        run: cd terraform && terragrunt init
+        run: |
+          cd terraform
+          terragrunt init
 
       - name: Terragrunt plan
-        run: cd terraform && terragrunt plan
+        run: |
+          cd terraform
+          terragrunt plan

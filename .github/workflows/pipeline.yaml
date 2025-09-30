@@ -1,0 +1,95 @@
+---
+name: 'Test, build and deploy 🚀'
+
+on:
+  push:
+
+permissions:
+  id-token: write # for OIDC
+
+env:
+  TG_ALL: true
+
+jobs:
+  build:
+    name: Test and build Lambda
+    environment: dev
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: lambda
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: List files after checkout
+        run: tree
+
+      - name: Install asdf & tools
+        uses: asdf-vm/actions/install@v4
+
+      - name: Bun install
+        run: bun ci
+
+      - name: Bun audit
+        run: bun audit
+
+      - name: Run TypeScript type check
+        run: bun run typecheck
+
+      - name: Run test suite
+        run: bun test
+
+      - name: Build
+        run: bun run build
+
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: lambda-bundle
+          path: lambda/build
+
+  terragrunt:
+    name: Run terragrunt plan/apply
+    needs: build
+    environment: dev
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Restore build artifacts
+        uses: actions/download-artifact@v5
+        with:
+          name: lambda-bundle
+          path: lambda/build
+
+      - name: List files after checkout
+        run: tree
+
+      - name: Install asdf & tools
+        uses: asdf-vm/actions/install@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ vars.ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - name: Check caller identity
+        run: aws sts get-caller-identity
+
+      - name: Terragrunt validate
+        run: terragrunt validate
+
+      - name: Terragrunt init
+        run: terragrunt init
+
+      - name: Terragrunt plan
+        run: terragrunt plan
+
+      - name: Terragrunt apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terragrunt --non-interactive apply

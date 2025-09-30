@@ -1,24 +1,28 @@
-import { beforeAll, beforeEach, describe, expect, it, spyOn } from 'bun:test';
+import { beforeAll, beforeEach, describe, expect, it } from 'bun:test';
 import { mockClient } from 'aws-sdk-client-mock';
 
-import type { Context, APIGatewayProxyResult, APIGatewayEvent, APIGatewayProxyEvent } from 'aws-lambda';
-import { DescribeInstancesCommand, EC2Client, type DescribeInstancesCommandOutput } from '@aws-sdk/client-ec2';
+import type { Context, APIGatewayProxyEvent } from 'aws-lambda';
+import { DescribeInstancesCommand, EC2Client } from '@aws-sdk/client-ec2';
 import { BatchWriteCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 
 import { handler } from '../src';
+
+const tableName = 'mockDynamoDBTable';
 
 const ddbDocMock = mockClient(DynamoDBDocumentClient);
 const ec2Mock = mockClient(EC2Client);
 
 describe('EC2 Inspector Lambda', () => {
+  beforeAll(() => {
+    process.env.DYNAMODB_TABLE_NAME = tableName;
+    process.env.AWS_REGION = 'eu-west-2';
+  });
+
   beforeEach(() => {
     ec2Mock.reset();
   });
 
   it('Retrieves a list of EC2 instances and saves it to DynamoDB', async () => {
-    const tableName = 'mockDynamoDBTable';
-    process.env.DYNAMODB_TABLE_NAME = tableName;
-
     const reservations = {
       Reservations: [
         {

@@ -81,11 +81,11 @@ jobs:
       - name: Check caller identity
         run: aws sts get-caller-identity
 
-      - name: Terragrunt validate
-        run: terragrunt validate
-
       - name: Terragrunt init
         run: terragrunt init
+
+      - name: Terragrunt validate
+        run: terragrunt validate
 
       - name: Terragrunt plan
         run: terragrunt plan

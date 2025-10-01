@@ -1,4 +1,5 @@
 .aws
+.DS_Store
 .envrc
 .terraform
 .terragrunt-stack

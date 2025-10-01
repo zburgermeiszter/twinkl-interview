@@ -1,13 +1,17 @@
 # Senior Platform Engineer take-home test @ Twinkl
 
 This repo is deploying a TypeScript Lambda function to AWS using Terraform.  
-The Lambda is listing EC2 instances, and saving the list of metadata to EC2.
-The execution is triggered over HTTPS by sending a GET request to an URL.
+The Lambda is listing EC2 instances, and saving the list of metadata to EC2.  
+The execution is triggered over HTTPS by sending a GET request to an URL.  
 The URL is printed at the end of the Terraform apply step.
+
+## Presentation
+
+The requested presentation for Part 2 of the task is available in the `presentation` folder of this repository.
 
 ## Streamlined Developer Experience
 
-Terragrunt is used for IaC because it handles Terraform state bucket creation without extra manual deployment.
+Terragrunt is used for IaC because it handles Terraform state bucket creation without extra manual deployment.  
 It is also splitting the state to limit the blast radius.
 
 Terrarunt is using OpenTofu in the background instead of Terraform due to licensing reasons.
@@ -49,10 +53,14 @@ To tear down the resources deployed int the previous step run `terragrunt destro
 
 ## CI/CD
 
-This repo is using GitHub Actions for CI/CD and it authenticates against AWS using OIDC.  
+This repo is using GitHub Actions for CI/CD which authenticates against AWS using OIDC.  
 Push to non-`main` branches will trigger a build and plan pipeline.  
 For `main` branch automatic deployment is enabled.
 
 ## Room for improvements
 
-Push terraform plan to Pull Requests as a message.
+- Put Lambda behind API Gateway
+- Cache Terraform plugins in pipeline
+- Push Terraform plan to Pull Requests as a message
+- Make infrastructure chart in the presentation more detailed
+- Evaluate Atlantis
